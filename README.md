@@ -1,18 +1,18 @@
 Sample batch command
 ====================
 
-# This is a Sanger assembly & annotation pipeline for the Nextflow framework.
+## This is a Sanger assembly & annotation pipeline for the Nextflow framework.
 
-### Only 4 fixed primers which are used in pipelines are "27F", "789F", "907R", "1492R"
-### Sample names are detected automatically. ( only dash sign (-)is allowed in the assigned sample names)
-### Three required parameters: assigned group name, order name by QuintaraBio and order id by QuintaraBio
+#### 1. Only 4 fixed primers which are used in pipelines are "27F", "789F", "907R", "1492R"
+#### 2. Sample names are detected automatically. ( only dash sign (-)is allowed in the assigned sample names)
+#### 3. Three required parameters are assigned group name, order name by QuintaraBio and order id by QuintaraBio
 
 ```{bash}
 aws batch submit-job \
   --job-name nf-sanger \
   --job-queue priority-maf-pipelines \
   --job-definition nextflow-production \
-  --container-overrides command="s3://nextflow-pipelines/nf-sanger, \
+  --container-overrides command="FischbachLab/nf-sanger, \
 "--group","20230309_TYs", \
 "--name","20230309_TYs", \
 "--order","835278", \

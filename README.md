@@ -3,8 +3,8 @@ Sample batch command
 
 ## This is a Sanger assembly & annotation pipeline for the Nextflow framework.
 
-#### 1. Only 4 fixed primers which are used in pipelines are "27F", "789F", "907R", "1492R"
-#### 2. Sample names are detected automatically. ( only dash sign (-)is allowed in the assigned sample names)
+#### 1. Only 4 fixed primers which are allowed in the pipeline are "27F", "789F", "907R", "1492R"
+#### 2. Sample names are detected automatically. (Only dash sign (-) is allowed in the assigned sample names)
 #### 3. Three required parameters are assigned group name, order name by QuintaraBio and order id by QuintaraBio
 
 ```{bash}

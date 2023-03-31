@@ -12,7 +12,7 @@ aws batch submit-job \
   --job-name nf-sanger \
   --job-queue priority-maf-pipelines \
   --job-definition nextflow-production \
-  --container-overrides command="FischbachLab/nf-sanger, \
+  --container-overrides command="FischbachLab/nf-Sanger, \
 "--group","20230309_TYs", \
 "--name","20230309_TYs", \
 "--order","835278", \

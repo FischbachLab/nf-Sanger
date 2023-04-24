@@ -115,4 +115,4 @@ echo "Live long and prosper" >> ${LOCAL_OUTPUT}/job.complete
 ## Sync output
 aws s3 sync "${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/" "${S3OUTPUTPATH}"
 aws s3 sync "${LOG_DIR}" "${S3OUTPUTPATH}/Logs/"
-aws s3 cp "${LOCAL_OUTPUT}/job.complete" "${S3OUTPUTPATH}"
+aws s3 cp "${LOCAL_OUTPUT}/job.complete" "${S3OUTPUTPATH}/Logs/job.complete"

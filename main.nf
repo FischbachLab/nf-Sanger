@@ -1,5 +1,8 @@
 #!/usr/bin/env nextflow
-nextflow.enable.dsl=1
+nextflow.enable.dsl=2
+
+include {sanger} from './modules/sanger'
+
 // If the user uses the --help flag, print the help text below
 params.help = false
 
@@ -9,6 +12,7 @@ def helpMessage() {
     Run the Sanger assembly and annotatin pipeline for sanger reads
 
     Required Arguments:
+      --input_path    s3 path to compressed Sanger sequencing files
       --group         MITI_assigned_group_name
       --name          QuintaraBio_sequencing_name
       --order         QuintaraBio_order_id
@@ -50,45 +54,13 @@ if (params.order == "null") {
  * Each of the following parameters can be specified as command line options
  */
 
-def output_path = "${params.output_path}"
-//def output_path=s3://genomics-workflow-core/Pipeline_Results//${params.output_prefix}"
+workflow {
 
-//println output_path
-/*
-Channel
-    .fromPath(params.reads1)
-    .set { read1_ch }
+    // .fromPath(${params.input_path}/${params.name}/${params.order})
+    sanger_ch = Channel
+                    .fromPath(params.input_path)
+                    .ifEmpty { exit 1, "Cannot find Sanger files" }
+    
+    sanger_ch | sanger 
 
-Channel
-    .fromPath(params.reads2)
-    .set { read2_ch }
-*/
-
-
-/*
- * Run Sanger assembly Pipeline
- */
-process sanger {
-
-    //container "xianmeng/nf-hybridassembly:latest"
-    container "fischbachlab/nf-sanger:latest"
-    cpus 8
-    memory 16.GB
-
-    publishDir "${output_path}", mode:'copy'
-
-    input:
-    //file read1 from read1_ch
-
-    output:
-    //path "*"
-
-    script:
-    """
-    export group="${params.group}"
-    export NAME="${params.name}"
-    export ORDER="${params.order}"
-    export S3OUTPUTPATH="${output_path}/${params.group}"
-    bash sanger_wrapper.sh
-    """
 }

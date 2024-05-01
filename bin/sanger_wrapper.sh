@@ -28,8 +28,8 @@ mkdir -p "${OUTPUTDIR}" "${LOCAL_OUTPUT}" "${LOG_DIR}" "${RAW_DATA}"
 trap '{ rm -rf ${OUTPUTDIR} ; exit 255; }' 1
 
 # get data
-aws s3 sync s3://maf-users/MITI/Sanger/QB_RAW_DATA/Compressed/${NAME}/ ${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/
-
+echo "Downloading Sanger files" 
+aws s3 sync ${S3INPUTPATH}/${NAME}/ ${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/
 
 mkdir -p ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
 mkdir -p ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/qc_files
@@ -45,10 +45,15 @@ do
   if [ ls "${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/${ORDER[idx]}/*.crdownload" 1>/dev/null 2>&1 ]; then
      rm  "${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/${ORDER[idx]}/*.crdownload"
   fi
-
-	    cp *_autoqc.xls ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/qc_files/
-
-      # each order id
+# make sure the qc file is available
+  if compgen -G "${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/${ORDER[idx]}/*_autoqc.xls" > /dev/null; then
+      echo "Copy QC files" 
+      cp "${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/${ORDER[idx]}/${ORDER[idx]}_autoqc.xls" ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/qc_files/
+  else
+      echo "NO QC files found in ${NAME}/${ORDER[idx]}" 
+  fi
+	   
+      # loop each order id
       ids=`ls *.zip`
       echo ${ids[@]}
            for i in ${ids[@]};
@@ -56,26 +61,10 @@ do
             echo $i
             PARENT=$(pwd);
 
-            # ls *.zip | cut -f 3 -d _ | parallel "mkdir -p {}; mv *{}*.zip {}/"
-            dirname=`echo "$i" | cut -f 3 -d _`
+            dirname=`echo "$i" | cut -f 2,3 -d_ | cut -f1 -d.`
             echo $dirname
-            [ ! -d $dirname ] &&  mkdir -p $dirname && mv $i $dirname
-
-            for f in $dirname/*.zip; do
-                   echo $f
-
-                 NEW_DIR=$PARENT/$(echo "${f}" | cut -f 1 -d /);
-                 cd "${NEW_DIR}"
-                 echo ${NEW_DIR}
-                 if compgen -G "*.zip" > /dev/null; then
-                   for z in *.zip; do
-                     unzip $z && sleep 1
-                   #ls *.zip | parallel "unzip {}" | echo "y";
-                     cp *.ab1 ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
-                    done
-                 fi
-                 cd -;
-            done
+            unzip "$i"
+            cp $dirname/*.ab1 ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
        done
 done
 

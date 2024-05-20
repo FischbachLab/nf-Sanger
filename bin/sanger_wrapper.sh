@@ -60,11 +60,12 @@ do
            do
             echo $i
             PARENT=$(pwd);
-
-            dirname=`echo "$i" | cut -f 2,3 -d_ | cut -f1 -d.`
-            echo $dirname
-            unzip "$i"
-            cp $dirname/*.ab1 ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
+            #dirname=`echo "$i" | cut -f 2,3 -d_ | cut -f1 -d.`
+            #echo $dirname
+            #unzip "$i"
+            #cp $dirname/*.ab1 ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
+            # copy .ab1 file to the designated dir
+            unzip "$i" "*.ab1" -d ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
        done
 done
 

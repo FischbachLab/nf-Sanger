@@ -2,7 +2,8 @@
  * Run Sanger assembly Pipeline
  */
 process sanger {
-
+    tag "${params.group}"
+    
     //container 'fischbachlab/nf-sanger:latest'
     container "${params.container}"
     cpus 8

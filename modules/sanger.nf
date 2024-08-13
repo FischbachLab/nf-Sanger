@@ -25,7 +25,7 @@ process sanger {
     export ORDER="${params.order}"
     export S3OUTPUTPATH="${params.output_path}/${params.group}"
 
-    bash sanger_wrapper.sh
+    bash sanger_wrapper_isolateR.sh
 
     """
 }

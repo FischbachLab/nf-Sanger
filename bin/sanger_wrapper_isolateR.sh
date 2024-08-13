@@ -41,7 +41,7 @@ for ((idx=0; idx<${#ORDER[@]}; ++idx));
 do
   echo ${ORDER[idx]}
   cd ${RAW_DATA}/QB_RAW_DATA_Compressed/${NAME}/${ORDER[idx]}/
-  cp *_autoqc.xls ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/qc_files
+  #cp *_autoqc.xls ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/qc_files
   
   if [ ls "*.crdownload" 1>/dev/null 2>&1 ]; then
     rm  "*.crdownload"
@@ -62,47 +62,23 @@ do
   done
 done
 
+# update file names
+cd ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
+for i in *.ab1; do mv $i ${i%_2024*}.ab1; done
+cd -
+
 #group=${1:?"Enter group name as argv[1]"}
 
 export R_HOME="$(which R)"
 echo $R_HOME
-ls -l /work/scripts/
-echo " *************************************  "
-echo " test the path to 16S_assembly_silva.sh "
-echo " *************************************  "
-ls -l /work/nextflow-bin/
-which R
-which 16S_assembly_silva.sh 
+
 #ls -l /work/scripts/
 #ls -l ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}
 #ls -l ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files/
 
-16S_assembly_silva.sh ${group} ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group} >${LOG_DIR}/$group.log \
-> ${LOG_DIR}/$group.log 2>&1 \
-&& 16S_assembly_ncbi.sh ${group} ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}
-
-cd ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/
+isolateR.R ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files 2> ${LOG_DIR}/$group.log 
 
 
-sanger_assembly_summary.R
-
-cd -
-
-# clean data
-rm -r ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
-rm -r ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/qc_files
-if [ -f ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/all.cons.csv ]; then
-  rm -r ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/all.cons.csv
-fi
-if [ -f ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/all_samples_primer_counts.tsv ]; then
-  rm -r ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/all_samples_primer_counts.tsv
-fi
-if [ -f ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/16S_silva_summary.csv ]; then
-  rm -r ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/16S_silva_summary.csv
-fi
-if [ -f ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/16S_ncbi_summary.csv ]; then
-  rm -r ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/16S_ncbi_summary.csv
-fi
 ######################### HOUSEKEEPING #############################
 DURATION=$((SECONDS - START_TIME))
 hrs=$(( DURATION/3600 )); mins=$(( (DURATION-hrs*3600)/60)); secs=$(( DURATION-hrs*3600-mins*60 ))
@@ -110,6 +86,6 @@ printf 'This AWSome pipeline took: %02d:%02d:%02d\n' $hrs $mins $secs > ${LOCAL_
 echo "Live long and prosper" >> ${LOCAL_OUTPUT}/job.complete
 ############################ PEACE! ################################
 ## Sync output
-aws s3 sync "${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/789F_907R_27F_1492R_outputs/" "${S3OUTPUTPATH}"
+aws s3 sync "${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files/isolateR_output/" "${S3OUTPUTPATH}/Sanger_outputs/"
 aws s3 sync "${LOG_DIR}" "${S3OUTPUTPATH}/Logs/"
-aws s3 cp "${LOCAL_OUTPUT}/job.complete" "${S3OUTPUTPATH}/Logs/job.complete"
+aws s3 cp "${LOCAL_OUTPUT}/job.complete" "${S3OUTPUTPATH}/job.complete"

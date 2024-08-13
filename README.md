@@ -8,7 +8,7 @@ This pipeline is based on the original [ioslateR](https://github.com/bdaisley/is
 ## Sample batch command
 ====================
 
-## This is a Sanger assembly & annotation pipeline for the Nextflow framework.
+### This is a Sanger assembly & annotation pipeline for the Nextflow framework.
 
 #### 1. Only 4 fixed primers which are allowed in the pipeline are "27F", "789F", "907R", "1492R"
 #### 2. Sample names are detected automatically. The format of ab1 file name is something like AK0000500_1492R_2024-07-23.ab1 <!--(Only the dash sign (-) is allowed in the assigned sample names)-->
@@ -31,7 +31,7 @@ aws batch submit-job \
 s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/03_isoLIB_results.csv
 ```
 - Inspect the summary via CSV or html files
-<img src="assets/images/example-Sanger_summary.png" width="200" height="300" />
+<img src="assets/images/example-Sanger_summary.png" width="900" height="300" />
 
 
 ### The sanger assembled sequences:

@@ -7,7 +7,7 @@ LABEL authors="Xiandong Meng" \
       description="Sanger Assembly and Annotation Pipeline" \
       software.name="Sanger" \
       software.description="" \
-      software.website="" \
+      software.website="https://github.com/FischbachLab/" \
       container.category="tool"
 
 USER root:root
@@ -31,11 +31,18 @@ RUN conda config --add channels bioconda
 RUN conda config --add channels conda-forge
 
 #
-RUN conda install  -c conda-forge -y  awscli  \
-  &&  conda install r-isolater=1.0.1-0 -c bdaisley -c conda-forge -c bioconda -y \
+RUN conda install  -c conda-forge -y  ncurses bc awscli tracy=0.7.2  unzip readline  blast python pandas numpy \
+  &&  conda install -c r r-base  \
+  &&  conda install -c r r-essentials \
+  && conda install -c r r-tidyverse \
   && conda clean -afy
 
-#RUN mkdir -p /work
-#WORKDIR /work
-#
+#RUN echo 'will cite' | parallel --citation || true
 
+RUN mkdir -p /work
+WORKDIR /work
+
+# Get Repo
+COPY . .
+
+RUN chmod -R +rx ./

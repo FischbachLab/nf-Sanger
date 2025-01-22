@@ -64,7 +64,7 @@ done
 
 # update file names
 cd ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files
-for i in *.ab1; do mv $i ${i%_2024*}.ab1; done
+for i in *.ab1; do mv $i ${i%_202*}.ab1; done
 cd -
 
 #group=${1:?"Enter group name as argv[1]"}

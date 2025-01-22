@@ -11,9 +11,9 @@ ab1_path <-  args[1]
 # Run isoQC to trim poor quality regions
 isoQC.S4 <- isoQC(input=ab1_path, sliding_window_cutoff=20)
 
-fpath2 <- file.path(ab1_path, "isolateR_output/01_isoQC_trimmed_sequences_PASS.csv")
 
 # Assemble full length 16S seqeunce
+fpath2 <- file.path(ab1_path, "isolateR_output/01_isoQC_trimmed_sequences_PASS.csv")
 sanger_assembly(input =fpath2, suffix = "_1492R.ab1|_27F.ab1|_789F.ab1|_907R.ab1")
 
 fpath3 <- file.path(ab1_path,"isolateR_output/01_isoQC_trimmed_sequences_PASS_consensus.csv")
@@ -21,13 +21,12 @@ fpath3 <- file.path(ab1_path,"isolateR_output/01_isoQC_trimmed_sequences_PASS_co
 # Perform quick classification
 isoTAX.S4 <- isoTAX(input=fpath3, quick_search=TRUE)
 
-fpath4 <- file.path(ab1_path, "isolateR_output/02_isoTAX_results.csv")
-
-# Generate strain library
-isoLIB.S4 <- isoLIB(input=fpath4,
-                    old_lib_csv=NULL,
-                    group_cutoff=0.995,
-                    include_warnings=FALSE)
+# Don't Generate strain library any longer
+#fpath4 <- file.path(ab1_path, "isolateR_output/02_isoTAX_results.csv")
+#isoLIB.S4 <- isoLIB(input=fpath4,
+#                    old_lib_csv=NULL,
+#                    group_cutoff=0.995,
+#                    include_warnings=FALSE)
 
 
 # all in one step

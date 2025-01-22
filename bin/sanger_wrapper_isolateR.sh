@@ -78,7 +78,10 @@ echo $R_HOME
 
 isolateR.R ${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files 2> ${LOG_DIR}/$group.log 
 
-
+# remove the lib dir
+if [ -d "${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files/isolateR_output/lib" ]; then
+   rm -r "${LOCAL_OUTPUT}/QB_RAW_DATA_by_group/${group}/all_ab1_files/isolateR_output/lib" 
+fi
 ######################### HOUSEKEEPING #############################
 DURATION=$((SECONDS - START_TIME))
 hrs=$(( DURATION/3600 )); mins=$(( (DURATION-hrs*3600)/60)); secs=$(( DURATION-hrs*3600-mins*60 ))

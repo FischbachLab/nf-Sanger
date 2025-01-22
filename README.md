@@ -28,9 +28,13 @@ aws batch submit-job \
 
 ### The final Sanger summary file:
 ```{bash}
-s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/03_isoLIB_results.csv
+s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/02_isoTAX_results.html
 ```
-- Inspect the summary via CSV or html files
+or
+```{bash}
+s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/02_isoTAX_results.csv
+```
+- Inspect the summary via a CSV or html file
 <img src="assets/images/example-Sanger_summary.png" width="900" height="300" />
 
 

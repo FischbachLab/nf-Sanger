@@ -10,7 +10,7 @@ This pipeline is based on the original [ioslateR](https://github.com/bdaisley/is
 
 ### This is a Sanger assembly & annotation pipeline for the Nextflow framework.
 
-#### 1. Only 4 fixed primers which are allowed in the pipeline are "27F", "789F", "907R", "1492R"
+#### 1. Only 4 fixed primers allowed in the pipeline are "27F", "789F", "907R", "1492R"
 #### 2. Sample names are detected automatically. The format of ab1 file name is something like AK0000500_1492R_2024-07-23.ab1 <!--(Only the dash sign (-) is allowed in the assigned sample names)-->
 #### 3. Three required parameters are assigned group name, order name by QuintaraBio and order id by QuintaraBio
 
@@ -26,15 +26,15 @@ aws batch submit-job \
 "--output_path", "s3://genomics-workflow-core/Results/Sanger/TEST" "
 ```
 
-### The final Sanger summary file:
-```{bash}
-s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/02_isoTAX_results.html
-```
-or
+### The final Sanger summary file in csv and html:
 ```{bash}
 s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/02_isoTAX_results.csv
 ```
-- Inspect the summary via a CSV or html file
+or
+```{bash}
+s3://genomics-workflow-core/Results/Sanger/TEST/20240731_M002-20_16S-Sanger/Sanger_outputs/02_isoTAX_results.html
+```
+- Inspect the taxonomic summary via a CSV file
 <img src="assets/images/example-Sanger_summary.png" width="900" height="300" />
 
 
